@@ -57,7 +57,7 @@ class ComunaController extends Controller
         ->get();
 
         return json_encode(['comuna'=> $comuna, 'municipios' => $municipios]);
-        
+
     }
 
     /**
@@ -69,7 +69,11 @@ class ComunaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      $comuna = Comuna::find(find);
+      $comuna->comu_nomb = $request->comu_nomb;
+      $comuna->muni_codi = $request->muni_codi;
+      $comuna->save();
+      return json_encode(['comuna'=>$comuna]);
     }
 
     /**
