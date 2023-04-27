@@ -5,7 +5,8 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use app\models\Comuna;
-use Illuminate\Support\personas\BD;
+use Illuminate\Support\Facades\DB;
+
 
 class ComunaController extends Controller
 {
@@ -16,7 +17,14 @@ class ComunaController extends Controller
      */
     public function index()
     {
-        //
+        $comunas = DB::table('tb_comuna')
+        ->join('tb_municipio','tb_comuna.muni_codi','=', "tb_municipio.muni_codi")
+        ->select('tb_comuna.*',"tb_municipio.muni_nomb")
+        ->get();
+        return json_encode(['comunas'=>$comunas]);
+       
+
+
     }
 
     /**
@@ -27,7 +35,12 @@ class ComunaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $comuna = new Comuna();
+        $comun->comu_nomb = $request->comu_nomb;
+        $comuna->muni_codi = $request->muni_codi;
+        $comuna->save();
+        return json_encode(['comuna'=> $comuna]);
+
     }
 
     /**
@@ -38,7 +51,13 @@ class ComunaController extends Controller
      */
     public function show($id)
     {
-        //
+        $comuna = Comuna::find($id);
+        $municipios = DB::table('tb_municipio')
+        ->orderBy('muni_nomb')
+        ->get();
+
+        return json_encode(['comuna'=> $comuna, 'municipios' => $municipios]);
+        
     }
 
     /**
